@@ -1,0 +1,15 @@
+{
+  "name": "remotejs",
+  "version": "0.0.1",
+  "description": "A remote control for basic interaction with the browser of a PC from a phone.",
+  "main": "Gruntfile.js",
+  "dependencies": {
+    "grunt": "^0.4.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Scott Andrechek",
+  "license": "MIT"
+}

@@ -1,0 +1,3 @@
+node_modules
+# Minified/Concat version of .js
+dist
