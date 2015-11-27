@@ -1,2 +1,2 @@
 # SimpleChatJS
-A simple chat for simple people.
+A simple web chat for simple people.
