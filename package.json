@@ -1,7 +1,7 @@
 {
   "name": "remotejs",
   "version": "0.0.1",
-  "description": "A remote control for basic interaction with the browser of a PC from a phone.",
+  "description": "A simple chat client.",
   "main": "Gruntfile.js",
   "dependencies": {
     "grunt": "^0.4.5"
