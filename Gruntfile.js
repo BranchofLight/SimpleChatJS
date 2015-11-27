@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['src/*.js'],
-        dest: 'dist/debug.js',
+        dest: 'debug.js',
       },
     },
     watch: {
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
     jshint: {
       src: ['Gruntfile.js'],
       beforeconcat: ['src/*.js'],
-      afterconcat: ['dist/debug.js'],
+      afterconcat: ['debug.js'],
     },
     uglify: {
       my_target: {
