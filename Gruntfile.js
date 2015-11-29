@@ -21,14 +21,14 @@ module.exports = function(grunt) {
       tasks: ['lint', 'concat'],
     },
     jshint: {
-      src: ['Gruntfile.js'],
-      beforeconcat: ['src/client*.js', 'src/server*.js'],
-      afterconcat: ['site-assets/client-debug.js', 'site-assets/server-debug.js'], // Do not lint ugly release
+      src: ['Gruntfile.js', 'src/client*.js', 'src/server*.js'],
+      // beforeconcat: ['src/client*.js', 'src/server*.js'],
+      // afterconcat: ['site-assets/client-debug.js', 'site-assets/server-debug.js'], // Do not lint ugly release
     },
     uglify: {
       my_target: {
         files: {
-          // Keep release as debug is more useful non-ugly
+          // Keep release only as debug is more useful non-ugly
           'site-assets/client-release.js': ['src/client*.js'],
           'site-assets/server-release.js': ['src/server*.js']
         }
