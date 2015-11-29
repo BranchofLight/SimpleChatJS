@@ -1,0 +1,92 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: auto;
+
+  overflow: hidden;
+}
+
+#main-content {
+  outline-style: solid;
+  outline-color: black;
+
+  /* Sum of #message-area width (or #input-area width) + #users-area = #main-content width */
+  width: 950px;
+  margin: 0 auto;
+}
+
+#message-area {
+  outline-style: solid;
+  outline-color: red;
+
+  padding-top: 10px;
+
+  /* Sum of #message-area width (or #input-area width) + #users-area = #main-content width */
+  /* #input-area width must be the same as #message-area width */
+  width: 750px;
+  /* #users-area height = #message-area height */
+  height: 800px;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  float: left;
+}
+
+#input-container {
+  float: left;
+}
+
+#input-area {
+  outline-style: solid;
+  outline-color: blue;
+
+  /* Sum of #message-area width (or #input-area width) + #users-area = #main-content width */
+  /* #input-area width must be the same as #message-area width */
+  width: 750px;
+  height: 20px;
+}
+
+#users-area {
+  outline-style: solid;
+  outline-color: green;
+
+  /* Sum of #message-area width (or #input-area width) + #users-area = #main-content width */
+  width: 200px;
+  /* #users-area height = #message-area height */
+  height: 800px;
+
+  float: left;
+}
+
+#msg-form input:first-child {
+  width: 90%;
+  font-size: 16px;
+}
+
+#msg-form button:nth-child(2) {
+  width: 8%;
+  height: 100%;
+}
+
+#message-area li {
+  list-style-type: none;
+  margin-left: 10px;
+  display: inline-block;
+
+  word-wrap: break-word;
+  /* Cut pixels due to margin-left and scrollbar */
+  width: 720px;
+}
+
+#message-area li:nth-child(odd) {
+  background: rgba(125, 191, 230, 0.8);
+}
+
+#message-area li:nth-child(even) {
+  background: rgba(6, 95, 148, 0.8);
+  color: white;
+}

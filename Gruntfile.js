@@ -1,15 +1,19 @@
 module.exports = function(grunt) {
-
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    dirs: {
+      type: "debug", // 'debug' or 'release'
+    },
     concat: {
       options: {
         seperator: ',',
       },
       dist: {
-        src: ['src/*.js'],
-        dest: 'debug.js',
+        files: {
+          "site-assets/client-<%= dirs.type %>.js": ['src/client*.js'],
+          "site-assets/server-<%= dirs.type %>.js": ['src/server*.js'],
+        },
       },
     },
     watch: {
@@ -18,13 +22,15 @@ module.exports = function(grunt) {
     },
     jshint: {
       src: ['Gruntfile.js'],
-      beforeconcat: ['src/*.js'],
-      afterconcat: ['debug.js'],
+      beforeconcat: ['src/client*.js', 'src/server*.js'],
+      afterconcat: ['site-assets/client-debug.js', 'site-assets/server-debug.js'], // Do not lint ugly release
     },
     uglify: {
       my_target: {
         files: {
-          'dist/release.js': ['src/*.js']
+          // Keep release as debug is more useful non-ugly
+          'site-assets/client-release.js': ['src/client*.js'],
+          'site-assets/server-release.js': ['src/server*.js']
         }
       }
     }

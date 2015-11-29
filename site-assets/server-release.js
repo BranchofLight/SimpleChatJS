@@ -1,0 +1,1 @@
+var app=require("express")(),http=require("http").Server(app),io=require("socket.io")(http),htmlDir=__dirname+"/html/";app.get("/",function(a,b){b.sendFile(htmlDir+"index.html")}),io.on("connection",function(a){console.log("A user connected."),a.on("chat-message",function(a){io.emit("chat-message",a)})}),http.listen(3e3,function(){console.log("Listening on :3000")});
