@@ -8,7 +8,7 @@
 
     <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="../client-debug.js"></script>
+    <script src="client-debug.js"></script>
 
     <title>SimpleChatJS</title>
   </head>
@@ -19,17 +19,18 @@
           <p>Enter a username: </p>
           <input type="text" id="usr-box" autocomplete="off">
           <button type="submit" id="usr-btn" class="btn">Accept</button>
+        </form>
       </div>
     </div>
     <div id="main-content">
       <div id="header">SimpleChatJS</div>
       <div id="message-area"></div>
-      <div id="users-area"></div>
+      <div id="users-area"><h2>Users</h2></div>
       <div id="input-container">
         <div id="input-area">
           <form id="msg-form">
             <input type="text" id="msg-box" autocomplete="off" placeholder="Message">
-            <button type="submit" id="msg-btn" class="btn">Send</button>
+            <button type="submit" id="msg-btn">Send</button>
           </form>
         </div>
       </div>
