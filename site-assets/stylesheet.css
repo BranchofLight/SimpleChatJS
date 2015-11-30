@@ -9,6 +9,80 @@ body {
   overflow: hidden;
 }
 
+#land-overlay {
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  z-index: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+#username-input {
+  /*outline-style: dashed;
+  outline-color: #E88000;*/
+  border-radius: 15px;
+  border-style: dashed;
+  border-color: #E88000;
+
+  width: 400px;
+  height: 80px;
+
+  margin: 0 auto;
+
+  background-image:
+    radial-gradient(
+      #FFC783, #FFB355
+    );
+}
+
+#usr-form {
+  width: 100%;
+  height: 100%;
+}
+
+#usr-form > * {
+  line-height: 20px;
+  margin-top: 30px;
+
+  float: left;
+}
+
+#username-input p:first-child {
+  margin-left: 10px;
+  font-size: 16px;
+  max-width: 200px;
+
+  font-weight: bold;
+
+  font-family: 'Lato', sans-serif;
+}
+
+#usr-box {
+  margin-left: 10px;
+  max-width: 140px;
+
+  font-size: 18px;
+  text-align: right;
+
+  font-family: 'Lato', sans-serif;
+}
+
+#usr-btn {
+  margin-left: 10px;
+  margin-top: 28px;
+
+  padding-bottom: 4px;
+  padding-top: 4px;
+
+  max-width: 90px;
+}
+
 #main-content {
   outline-style: solid;
   outline-color: black;
@@ -21,8 +95,6 @@ body {
 #message-area {
   outline-style: solid;
   outline-color: red;
-
-  padding-top: 10px;
 
   /* Sum of #message-area width (or #input-area width) + #users-area = #main-content width */
   /* #input-area width must be the same as #message-area width */
@@ -89,4 +161,22 @@ body {
 #message-area li:nth-child(even) {
   background: rgba(6, 95, 148, 0.8);
   color: white;
+}
+
+.btn {
+  -webkit-border-radius: 8;
+  -moz-border-radius: 8;
+  text-shadow: 3px 2px 5px #381b38;
+  font-family: 'Lato', sans-serif;
+  color: #ffffff;
+  font-size: 14px;
+  background: #FF8D01;
+  padding: 10px 20px 10px 20px;
+  border: solid #FF8D01 2px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #FFB355;
+  text-decoration: none;
 }

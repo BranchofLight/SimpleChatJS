@@ -4,28 +4,39 @@
  */
 
 /* TODO:
- * Nicknames
+ * Nicknames (li color based on nickname?)
  * Cookies (saving nicknames + maybe chat log)
  */
 
-var express = require('express');
-var app = express();
+var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-// Used to allow index.html to load resources as well
-app.use(express.static(__dirname));
+var htmlDir = __dirname + "/html/";
+
+var usersConnected = [];
 
 app.get('/', function(request, response) {
-  response.sendFile(__dirname + "/index.html");
+  response.sendFile(htmlDir + "index.html");
 });
 
 io.on('connection', function(socket) {
-  console.log("User connected.");
-  socket.on('msg-sent', function(msg) {
-    socket.broadcast.emit('msg-sent', msg);
-    console.log("Recieved message: " + msg);
-    console.log("Sending it to every other connection.");
+  console.log("A user connected.");
+  socket.on('chat-message', function(msg) {
+    io.emit('chat-message', msg);
+  });
+
+  socket.on('usr-req', function(usr) {
+    console.log("Username requested: " + usr);
+    if (usersConnected.indexOf(usr) > -1) {
+      console.log("Refusing user: " + usr);
+      console.log("Username is in use.");
+      /* TODO:
+       * Gives users unique socket id on connect http://stackoverflow.com/questions/10110411/node-js-socket-io-how-to-emit-to-a-particular-client
+       * Make sure to handle removing id on disconnect
+       * Finish nicknames
+       */
+    }
   });
 });
 
