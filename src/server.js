@@ -6,16 +6,26 @@
 /* TODO:
  */
 
+// var express = require('express');
+// var cookieParser = require('cookie-parser');
+// var app = express();
+// var http = require('http').Server(app);
+// var io = require('socket.io')(http);
+
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
+
+server.listen(process.env.PORT || 3000);
+
+// http.listen((process.argv.PORT || 3000), function() {
+//   console.log("Listening on :" + (process.argv.PORT || 3000));
+// });
 
 var users = [];
 var cookieUsername;
-
-io.set("transports", ["xhr-polling"]);
 
 // Initialize middleware for using cookies
 app.use(cookieParser());
@@ -30,6 +40,12 @@ app.get('/', function(request, response) {
 
   response.sendFile(__dirname + "/index.html");
 });
+
+// assuming io is the Socket.IO server object
+// io.configure(function () {
+//   io.set("transports", ["xhr-polling"]);
+//   io.set("polling duration", 10);
+// });
 
 io.on('connection', function(socket) {
   console.log("A user connected: " + socket.id);
@@ -139,10 +155,6 @@ io.on('connection', function(socket) {
       return s;
     }());
   });
-});
-
-http.listen(process.env.PORT || 3000, function() {
-  console.log("Listening on " + (process.env.PORT || 3000));
 });
 
 /**
