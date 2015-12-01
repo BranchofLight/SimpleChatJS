@@ -4,29 +4,29 @@
  */
 
 /* TODO:
- * Cookies (saving nicknames + maybe chat log)
  */
 
 var express = require('express');
+var cookieParser = require('cookie-parser');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 var users = [];
+var cookieUsername;
 
-// Serve static files (css, js) from the current directory
-app.use(express.static(__dirname));
+// Initialize middleware for using cookies
+app.use(cookieParser());
 
 app.get('/', function(request, response) {
-  console.log("hello");
+  // Serve static files (html, css, js) from the current directory
+  app.use(express.static(__dirname));
 
-  console.log(request.cookies.length + " cookies found.");
+  console.log("Cookies: ", request.cookies);
+  if (request.cookies.username !== undefined)
+    cookieUsername = request.cookies.username;
 
-  for (var i = 0; i < request.cookies.length; ++i) {
-    console.log("Cookie: " + request.cookies.cookieName);
-  }
-
-  response.sendFile(__dirname + "/index.html");  
+  response.sendFile(__dirname + "/index.html");
 });
 
 io.on('connection', function(socket) {
@@ -48,8 +48,12 @@ io.on('connection', function(socket) {
     io.to(id).emit('all-users', allNames);
   }();
 
-  // Create user object with id set
+  // Create user object with id
   users.push( {id: socket.id });
+  // Emit event for cookie user
+  if (cookieUsername !== undefined) {
+    io.to(id).emit('cookie-usr', cookieUsername);
+  }
   console.log("All socket ids: " + function() {
     var s = "";
     for (var i = 0; i < users.length; ++i) {
@@ -67,13 +71,14 @@ io.on('connection', function(socket) {
 
   socket.on('usr-req', function(usr) {
     console.log("Username requested: " + usr);
-    if (findUser(usr) > -1) {
+    // Limit length to 14 characters
+    if (findUser(usr) > -1 || usr.length > 14) {
       console.log("Rejecting user: " + usr);
-      console.log("Username is in use.");
       // If user is rejected just let that client know
       io.to(id).emit('usr-req', {
         username: usr,
-        accept: false
+        accept: false,
+        reason: (usr.length > 14) ? "len" : "exists"
       });
     } else {
       console.log("Accepting user: " + usr);
@@ -97,6 +102,14 @@ io.on('connection', function(socket) {
       }
       return s;
     }());
+  });
+
+  socket.on('usr-typing', function(usr) {
+    socket.broadcast.emit('usr-typing', usr);
+  });
+
+  socket.on('usr-not-typing', function(usr) {
+    socket.broadcast.emit('usr-not-typing', usr);
   });
 
   socket.on('disconnect', function() {

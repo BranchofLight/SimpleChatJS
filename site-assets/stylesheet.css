@@ -20,15 +20,14 @@ body {
   justify-content: center;
   align-items: center;
 
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(163, 228, 153, 0.8);
+  /*rgba(255, 255, 255, 0.9);*/
 }
 
 #username-input {
-  /*outline-style: dashed;
-  outline-color: #E88000;*/
-  border-radius: 15px;
-  border-style: dashed;
-  border-color: #E88000;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: #1E7F0F;
 
   width: 400px;
   height: 80px;
@@ -37,8 +36,13 @@ body {
 
   background-image:
     radial-gradient(
-      #FFC783, #FFB355
+      #1E7F0F, #77D269
     );
+}
+
+#header {
+  font-size: 36px;
+  font-family: 'Lato', sans-serif;
 }
 
 #usr-form {
@@ -84,9 +88,6 @@ body {
 }
 
 #main-content {
-  outline-style: solid;
-  outline-color: black;
-
   /* Sum of #message-area width (or #input-area width) + #users-area = #main-content width */
   width: 950px;
   margin: 0 auto;
@@ -94,7 +95,7 @@ body {
 
 #message-area {
   outline-style: solid;
-  outline-color: red;
+  outline-color: black;
 
   /* Sum of #message-area width (or #input-area width) + #users-area = #main-content width */
   /* #input-area width must be the same as #message-area width */
@@ -114,7 +115,7 @@ body {
 
 #input-area {
   outline-style: solid;
-  outline-color: blue;
+  outline-color: black;
 
   /* Sum of #message-area width (or #input-area width) + #users-area = #main-content width */
   /* #input-area width must be the same as #message-area width */
@@ -124,7 +125,7 @@ body {
 
 #users-area {
   outline-style: solid;
-  outline-color: green;
+  outline-color: black;
 
   /* Sum of #message-area width (or #input-area width) + #users-area width = #main-content width */
   width: 200px;
@@ -146,6 +147,7 @@ body {
 
 #users-area li {
   list-style-type: none;
+  border-bottom: 1px #1E7F0F dashed;
 }
 
 #msg-box {
@@ -158,6 +160,25 @@ body {
   height: 100%;
 }
 
+#msg-btn {
+  -webkit-border-radius: 8;
+  -moz-border-radius: 8;
+  border-radius: 8px;
+  text-shadow: 3px 2px 5px #381b38;
+  font-family: 'Lato', sans-serif;
+  color: #ffffff;
+  font-size: 14px;
+  background: #1E7F0F;
+  padding: 1px 8px 1px 8px;
+  border: solid #ffffff 1px;
+  text-decoration: none;
+}
+
+#msg-btn:hover {
+  background: #77D269;
+  text-decoration: none;
+}
+
 #message-area li {
   list-style-type: none;
   margin-left: 10px;
@@ -166,14 +187,27 @@ body {
   word-wrap: break-word;
   /* Cut pixels due to margin-left and scrollbar */
   width: 720px;
+
+  border-bottom: 1px black solid;
+  border-left: 1px black solid;
 }
 
-#message-area li:nth-child(odd) {
-  background: rgba(125, 191, 230, 0.8);
+#message-area li {
+  background: rgba(157, 228, 146, 0.8);
+}
+
+/*#message-area li:nth-child(odd) {
+  background: rgba(52, 159, 35, 0.8);
+  color: white;
 }
 
 #message-area li:nth-child(even) {
-  background: rgba(6, 95, 148, 0.8);
+  background: rgba(157, 228, 146, 0.8);
+}*/
+
+#message-area li.server-msg {
+  font-weight: bold;
+  background: #B42C36;
   color: white;
 }
 
@@ -184,13 +218,18 @@ body {
   font-family: 'Lato', sans-serif;
   color: #ffffff;
   font-size: 14px;
-  background: #FF8D01;
+  background: #1E7F0F;
   padding: 10px 20px 10px 20px;
-  border: solid #FF8D01 2px;
+  border: solid #1E7F0F 2px;
   text-decoration: none;
 }
 
 .btn:hover {
-  background: #FFB355;
+  background: #369926;
   text-decoration: none;
+}
+
+.typing {
+  font-style: italic;
+  color: #1E7F0F;
 }

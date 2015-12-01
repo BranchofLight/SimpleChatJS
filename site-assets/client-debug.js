@@ -4,7 +4,6 @@
  */
 
 /* TODO:
- * Cookies (saving nicknames + maybe chat log)
  */
 
 $(document).ready(function() {
@@ -35,8 +34,35 @@ $(document).ready(function() {
 
     $msgBox.val('');
 
+    // Since msg-box is cleared regardless, emit not-typing event
+    console.log("User is no longer typing");
+    socket.emit('usr-not-typing', username);
+    removeIsTyping(username);
+
     // Prevents page redirecting on form submit
     event.preventDefault();
+  });
+
+  $('#msg-box').on('input', function() {
+    if (confirmInput($('#msg-box').val())) {
+      console.log("User is typing");
+      socket.emit('usr-typing', username);
+      addIsTyping(username);
+    } else {
+      console.log("User is no longer typing");
+      socket.emit('usr-not-typing', username);
+      removeIsTyping(username);
+    }
+  });
+
+  socket.on('usr-typing', function(usr) {
+    console.log("Attempting to add 'is typing' status: " + usr);
+    addIsTyping(usr);
+  });
+
+  socket.on('usr-not-typing', function(usr) {
+    console.log("Attempting to remove 'is typing' status: " + usr);
+    removeIsTyping(usr);
   });
 
   socket.on('msg-sent', function(usr, msg) {
@@ -49,14 +75,34 @@ $(document).ready(function() {
     if (acc.accept) {
       console.log("Username accepted: " + acc.username);
       addUsername(acc.username);
-      addMessage("Server", acc.username + " connected.");
+      addServerMsg(acc.username + " connected.");
       // Check to see if this is what this client requested
       if (username === acc.username) {
         $('#land-overlay').remove();
+
+        // Set/Update a cookie to expire in 10 years
+        var expires = 10 * 365 * 24 * 60 * 60;
+        $.cookie("username", acc.username, {
+          expires: expires,
+          path: '/'
+        });
       }
     } else {
       console.log("Username rejected: " + acc.username);
-      $('#username-input').append('<p>Error: username already taken.</p>');
+      var msg;
+      if (!$('#username-input #err').length) {
+        console.log("Reason: " + acc.reason);
+        msg = (acc.reason === "len") ? "username must be less than 14 characters." : "username already taken.";
+        $('#username-input').append('<p id=\"err\">Error: ' + msg + '</p>');
+      } else {
+        $('#username-input #err').fadeOut("fast", function() {
+          $('#username-input #err').remove();
+          console.log("Reason: " + acc.reason);
+          msg = (acc.reason === "len") ? "username must be less than 14 characters." : "username already taken.";
+          $('#username-input').append('<p id=\"err\">Error: ' + msg + '</p>');
+          $('#username-input #err').fadeIn("fast");
+        });
+      }
     }
   });
 
@@ -68,16 +114,37 @@ $(document).ready(function() {
 
   socket.on('user-left', function(usr) {
     console.log("A user left. Updating.");
-    $('#users-area').children().each(function(index) {
-      if ($(this).text() === usr) {
-        console.log("Removing user: " + $(this).text());
-        addMessage("Server", usr + " disconnected.");
-        $(this).remove();
-        return;
-      }
-    });
+    var $usr = findUserHTML(usr);
+    if ($usr !== undefined) {
+      console.log("Removing user: " + $usr.text());
+      addServerMsg(usr + " disconnected.");
+      $usr.remove();
+    }
+  });
+
+  socket.on('cookie-usr', function(usr) {
+    console.log("Cookie username found.");
+    $('#usr-box').val(usr);
   });
 });
+
+/**
+ * Find the user in users-area and return the Jquery obj assosiated
+ * @param {String} usr
+ * @return {JQuery} this or undefined
+ */
+var findUserHTML = function(usr) {
+  var $match;
+  $('#users-area').children().each(function() {
+    if ($(this).text() === usr) {
+      $match = $(this);
+      // Breaks out of each()
+      return false;
+    }
+  });
+
+  return $match;
+};
 
 /**
  * Adds message to the approriate location in HTML
@@ -87,6 +154,17 @@ $(document).ready(function() {
 var addMessage = function(usr, msg) {
   msg = sanitizeInput(msg);
   $('#message-area').append('<li>'+usr+": "+msg+'</li>');
+  $('#message-area').animate({
+    scrollTop: $('#message-area').prop('scrollHeight')
+  });
+};
+
+/**
+ * Adds server message
+ * @param {String} msg
+ */
+var addServerMsg = function(msg) {
+  $('#message-area').append("<li class=\"server-msg\">Server: " + msg + "</li>");
   $('#message-area').animate({
     scrollTop: $('#message-area').prop('scrollHeight')
   });
@@ -134,4 +212,25 @@ var confirmInput = function(input) {
   }
 
   return false;
+};
+
+/**
+ * Adds "is typing" to username
+ * @param {String} usr
+ */
+var addIsTyping = function(usr) {
+  var $usr = findUserHTML(usr);
+  if ($usr !== undefined)
+    $usr.html($usr.text() + "<span class=\"typing\">is typing</span>");
+};
+
+/**
+ * Removes "is typing" to username
+ * @param {String} usr
+ */
+var removeIsTyping = function(usr) {
+  // Must account for "is typing" appended
+  var $usr = findUserHTML(usr + "is typing");
+  if ($usr !== undefined)
+    $usr.text($usr.text().replace("is typing", ""));
 };
