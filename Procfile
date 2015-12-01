@@ -1,1 +1,1 @@
-web: node site-assets/server-release.js
+web: node site-assets/server-debug.js

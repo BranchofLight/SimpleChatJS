@@ -1,7 +1,7 @@
 node_modules
 # Minified/Concat version of .js
 dist
-# For heroku
+# For Heroku
 npm-debug.log
 .DS_Store
 /*.env
