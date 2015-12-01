@@ -15,10 +15,7 @@ var io = require('socket.io')(http);
 var users = [];
 var cookieUsername;
 
-io.configure(function () {
-  io.set("transports", ["xhr-polling"]);
-  io.set("polling duration", 10);
-});
+global.io.set("transports", ["xhr-polling"]);
 
 // Initialize middleware for using cookies
 app.use(cookieParser());
